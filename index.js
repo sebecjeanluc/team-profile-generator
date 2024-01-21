@@ -10,10 +10,9 @@ const outputPath = path.join(OUTPUT_DIR, 'team.html')
 
 const render = require('./src/page-template.js')
 
-const olivia = new Manager(1, 'olivia', 'olivia@sample.com', 1)
-console.log(olivia)
-let role = olivia.getRole()
-console.log(role)
+// const olivia = new Manager(1, 'olivia', 'olivia@sample.com', 1)
+// console.log(olivia)
+// console.log(olivia.getRole())
 
 const questions = [
 	{
@@ -48,7 +47,7 @@ const questions = [
 		type: 'list',
 		name: 'role',
 		message: 'Choose your role',
-		choices: ['manager', 'engineer', 'intern'],
+		choices: ['Manager', 'Engineer', 'Intern'],
 	},
 	{
 		type: 'number',
@@ -83,8 +82,8 @@ const questions = [
 	},
 ]
 
-function writeToFile(fileName, data) {
-	fs.writeFile(`./export/${fileName}.html`, data, (err) =>
+function writeToFile(content) {
+	fs.writeFile(outputPath, content, (err) =>
 		err ? console.log(err) : console.log('Success!')
 	)
 }
@@ -102,24 +101,29 @@ function init() {
 		.prompt(generateQuestions())
 
 		.then((answers) => {
+			console.log(answers)
 			switch (answers.role) {
-				case 'manager':
-					// const managerContent = render()
-					// const managerContent = generateTeam('manager')
-					console.log(answers)
-					// console.log(render(answersArray))
+				case 'Manager':
+					console.log('Manager')
+					const managerContent = new Manager(
+						answers.id,
+						answers.name,
+						answers.email,
+						answers.officeNumber
+					)
+					const content = render(managerContent)
+					console.log(content)
+					// writeToFile(content)
+					writeToFile('Hello world')
 					break
-				case 'engineer':
+				case 'Engineer':
 					break
-				case 'intern':
+				case 'Intern':
 					break
 				default:
+					console.log('Something is odd')
 					break
 			}
-
-			// const content = generateMarkdown(answers)
-			// console.log(answers)
-			// writeToFile('team.html', content)
 		})
 
 		.catch((error) => {
@@ -127,4 +131,4 @@ function init() {
 		})
 }
 
-// init()
+init()
