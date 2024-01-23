@@ -1,0 +1,9 @@
+.custom-layout-card__wrapper {
+	display: flex;
+	flex-wrap: wrap;
+	justify-content: space-around;
+}
+
+.custom-layout-card__wrapper > div {
+	margin-bottom: 20px;
+}

@@ -10,12 +10,14 @@ const outputPath = path.join(OUTPUT_DIR, 'team.html')
 
 const render = require('./src/page-template.js')
 
-// Ask manager question
-// Show the options
-// Ask the options choices of Engineer, Intern, or end the quetsion.
-// Continues of the choices
-// Show the options
+// [x] Ask manager question
+// [x] Show the options
+// [x] Ask the options choices of Engineer, Intern, or end the quetsion.
+// [x] Continues of the choices
+// [x] Show the options
 // Generate the answers to html
+// Write validations
+// Run the test
 
 const firstQuestion = [
 	{
@@ -44,7 +46,7 @@ const firstQuestion = [
 		type: 'input',
 		name: 'email',
 		message: "Write the manager's email address",
-		default: 'sample@sample.com',
+		default: 'manager@sample.com',
 	},
 	{
 		type: 'number',
@@ -85,7 +87,7 @@ const enginnerQuestion = [
 		type: 'input',
 		name: 'idEngineer',
 		message: 'Type your engineer ID',
-		default: 'sebecjeanluc',
+		default: '1',
 	},
 	{
 		type: 'input',
@@ -98,7 +100,6 @@ const enginnerQuestion = [
 		name: 'github',
 		message: "Type the engineer's github ID",
 		default: 'sebecjeanluc',
-		// when: (answers) => answers.mainmenu === 'Add an engineer',
 	},
 ]
 const internQuestion = [
@@ -128,13 +129,13 @@ const internQuestion = [
 	},
 ]
 
-const answersList = []
-
 function writeToFile(content) {
-	fs.writeFile(outputPath, content, (err) =>
+	const renderTeamPage = render(content)
+	fs.writeFile(outputPath, renderTeamPage, (err) =>
 		err ? console.log(err) : console.log('Success!')
 	)
 }
+const answersList = []
 
 function initialQuestions() {
 	firstQuestion.push(optionsQuestion)
@@ -146,22 +147,42 @@ function optionQuestion() {
 }
 
 function routeQuestion(answers) {
+	const aManager = new Manager(
+		answers.id,
+		answers.nameManager,
+		answers.email,
+		answers.officeNumber
+	)
+	if (!answersList.length) {
+		answersList.push(aManager)
+	}
 	if (answers.mainmenu === 'Add an engineer') {
 		console.log('Running Enginner Question')
-		return inquirer.prompt(enginnerQuestion).then((enginnerAnswers) => {
-			answersList.push(enginnerAnswers)
-			console.log(answersList)
+		return inquirer.prompt(enginnerQuestion).then((engineerAnswers) => {
+			const anEngineer = new Engineer(
+				engineerAnswers.idEngineer,
+				engineerAnswers.nameEngineer,
+				engineerAnswers.emailEngineer,
+				engineerAnswers.github
+			)
+			answersList.push(anEngineer)
 			return optionQuestion().then(routeQuestion)
 		})
 	} else if (answers.mainmenu === 'Add an intern') {
 		console.log('Running Intern Question')
 		return inquirer.prompt(internQuestion).then((internAnswers) => {
-			answersList.push(internAnswers)
-			console.log(answersList)
+			const anIntern = new Intern(
+				internAnswers.idIntern,
+				internAnswers.nameIntern,
+				internAnswers.emailIntern,
+				internAnswers.school
+			)
+			answersList.push(anIntern)
 			return optionQuestion().then(routeQuestion)
 		})
 	} else {
-		console.log('Question ended')
+		console.log('Completed the building team.')
+		writeToFile(answersList)
 	}
 }
 
