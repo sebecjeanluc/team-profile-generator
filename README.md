@@ -28,35 +28,45 @@ This project involves the creation of a Node.js command-line application designe
 
 ### Built With
 
+- ![HTML]
+- ![CSS]
+- ![BOOTSTRAP]
 - ![JAVASCRIPT]
 - ![NODEJS]
 
 ### How to install
 
 ```shell
-npm init
-npm i -y
-node index.js
+npm init -y
+npm install inquirer@6.3.1
+npm install jest
+
+Uptade: the file package-json line 10 to: "test": "jest"
+
+npm run test
+touch ./.gitignore
+
+Add: node_modules
+
 ```
 
 ### Usage
 
-Run the code and answer questions!
+On the terminal(for MacOS), you can run `node index.js` and answer the following questions. After that, you can check the folder called output and you can find the team.html file as the result.
 
 ### Mock-up
 
 ### Important note
 
-- This README will be used repeatedly by the author.
+Validation only works for the number.
 
 ### Website preview
 
-![please add your demo](../assets/images/x)
+![demo](./assets/images/demo.png)
 
 ### Third-party services
 
 - [inquirer - npm](https://www.npmjs.com/package/inquirer)
-- Nothing else
 
 ### Credits
 
@@ -64,7 +74,8 @@ Run the code and answer questions!
 
 ### Test
 
-- I will add them later about it.
+In the root directory,
+run `npm run test`
 
 ### License
 
