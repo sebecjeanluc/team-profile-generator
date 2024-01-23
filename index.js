@@ -10,15 +10,18 @@ const outputPath = path.join(OUTPUT_DIR, 'team.html')
 
 const render = require('./src/page-template.js')
 
-// const olivia = new Manager(1, 'olivia', 'olivia@sample.com', 1)
-// console.log(olivia)
-// console.log(olivia.getRole())
+// Ask manager question
+// Show the options
+// Ask the options choices of Engineer, Intern, or end the quetsion.
+// Continues of the choices
+// Show the options
+// Generate the answers to html
 
-const questions = [
+const firstQuestion = [
 	{
 		type: 'input',
-		name: 'name',
-		message: 'Type your full name',
+		name: 'nameManager',
+		message: "Type a manager' name",
 		default: 'Taro Yamada',
 	},
 	{
@@ -40,14 +43,8 @@ const questions = [
 	{
 		type: 'input',
 		name: 'email',
-		message: 'Write your email address',
+		message: "Write the manager's email address",
 		default: 'sample@sample.com',
-	},
-	{
-		type: 'list',
-		name: 'role',
-		message: 'Choose your role',
-		choices: ['Manager', 'Engineer', 'Intern'],
 	},
 	{
 		type: 'number',
@@ -64,23 +61,74 @@ const questions = [
 				}
 			}, 1000)
 		},
-		when: (answers) => answers.role === 'manager',
+	},
+]
+const optionsQuestion = {
+	type: 'list',
+	name: 'mainmenu',
+	message: 'Main menu: ',
+	choices: [
+		new inquirer.Separator(),
+		'Add an engineer',
+		'Add an intern',
+		'Finish building the team',
+	],
+}
+const enginnerQuestion = [
+	{
+		type: 'input',
+		name: 'nameEngineer',
+		message: "Type your engineer's name",
+		default: 'Enginner Smith',
+	},
+	{
+		type: 'input',
+		name: 'idEngineer',
+		message: 'Type your engineer ID',
+		default: 'sebecjeanluc',
+	},
+	{
+		type: 'input',
+		name: 'emailEngineer',
+		message: "Type your engineer's email address",
+		default: 'engineer@test.com',
 	},
 	{
 		type: 'input',
 		name: 'github',
-		message: 'Type your github ID',
+		message: "Type the engineer's github ID",
 		default: 'sebecjeanluc',
-		when: (answers) => answers.role === 'engineer',
+		// when: (answers) => answers.mainmenu === 'Add an engineer',
+	},
+]
+const internQuestion = [
+	{
+		type: 'input',
+		name: 'nameIntern',
+		message: "Write the intern's name",
+		default: 'Intern Smith',
+	},
+	{
+		type: 'input',
+		name: 'idIntern',
+		message: "Write the intern's ID",
+		default: '1',
+	},
+	{
+		type: 'input',
+		name: 'emailIntern',
+		message: "Write the intern's email address",
+		default: 'intern@sample.com',
 	},
 	{
 		type: 'input',
 		name: 'school',
-		message: 'Write your school name',
+		message: "Write the intern's school name",
 		default: 'The University of Liverpool',
-		when: (answers) => answers.role === 'intern',
 	},
 ]
+
+const answersList = []
 
 function writeToFile(content) {
 	fs.writeFile(outputPath, content, (err) =>
@@ -88,47 +136,37 @@ function writeToFile(content) {
 	)
 }
 
-function generateQuestions() {
-	const questionList = []
-	questions.forEach((question) => {
-		questionList.push(question)
+function initialQuestions() {
+	firstQuestion.push(optionsQuestion)
+	return inquirer.prompt(firstQuestion)
+}
+
+function optionQuestion() {
+	return inquirer.prompt(optionsQuestion)
+}
+
+function routeQuestion(answers) {
+	if (answers.mainmenu === 'Add an engineer') {
+		console.log('Running Enginner Question')
+		return inquirer.prompt(enginnerQuestion).then((enginnerAnswers) => {
+			answersList.push(enginnerAnswers)
+			console.log(answersList)
+			return optionQuestion().then(routeQuestion)
+		})
+	} else if (answers.mainmenu === 'Add an intern') {
+		console.log('Running Intern Question')
+		return inquirer.prompt(internQuestion).then((internAnswers) => {
+			answersList.push(internAnswers)
+			console.log(answersList)
+			return optionQuestion().then(routeQuestion)
+		})
+	} else {
+		console.log('Question ended')
+	}
+}
+
+initialQuestions()
+	.then(routeQuestion)
+	.catch((error) => {
+		console.log(error)
 	})
-	return questionList
-}
-
-function init() {
-	inquirer
-		.prompt(generateQuestions())
-
-		.then((answers) => {
-			console.log(answers)
-			switch (answers.role) {
-				case 'Manager':
-					console.log('Manager')
-					const managerContent = new Manager(
-						answers.id,
-						answers.name,
-						answers.email,
-						answers.officeNumber
-					)
-					const content = render(managerContent)
-					console.log(content)
-					// writeToFile(content)
-					writeToFile('Hello world')
-					break
-				case 'Engineer':
-					break
-				case 'Intern':
-					break
-				default:
-					console.log('Something is odd')
-					break
-			}
-		})
-
-		.catch((error) => {
-			console.log(error)
-		})
-}
-
-init()
