@@ -1,0 +1,19 @@
+{
+  "name": "team-profile-generator",
+  "version": "1.0.0",
+  "description": "<!-- TABLE OF CONTENTS -->   <details>     <summary>Table of Contents</summary>     <ol>       <li>         <a href=\"#about-this-project\">Team Profile Generator</a>         <ul>           <li><a href=\"#built-with\">Built With</a></li>         </ul>       </li>       <li><a href=\"#how-to-install\">How to install</a></li>       <li><a href=\"#usage\">Usage</a></li>       <li><a href=\"#important-note\">Important Note</a></li>       <li><a href=\"#website-preview\">Website Preview</a></li>       <li><a href=\"#credits\">Credits</a></li>       <li><a href=\"#license\">License</a></li>       <li><a href=\"#contact\">Contact</a></li>     </ol>   </details>",
+  "main": "index.js",
+  "directories": {
+    "lib": "lib"
+  },
+  "scripts": {
+    "test": "jest"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "inquirer": "^6.3.1",
+    "jest": "^29.7.0"
+  }
+}

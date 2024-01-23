@@ -1,0 +1,30 @@
+.custom-layout-card__wrapper {
+	display: flex;
+	flex-wrap: wrap;
+	justify-content: center;
+}
+
+.custom-layout-card__wrapper > div {
+	margin: 20px;
+}
+
+.custom-team-heading {
+	color: white;
+	background: linear-gradient(
+		90deg,
+		rgba(255, 0, 0, 1) 0%,
+		rgba(255, 70, 0, 1) 50%,
+		rgba(255, 53, 0, 1) 100%
+	);
+}
+
+.custom-card-header {
+	background: rgb(0, 106, 255);
+	background: linear-gradient(
+		183deg,
+		rgba(0, 106, 255, 1) 0%,
+		rgba(78, 105, 255, 1) 26%,
+		rgba(0, 150, 170, 1) 100%
+	);
+	color: white;
+}
