@@ -1,6 +1,7 @@
 const Manager = require('./lib/Manager')
 const Engineer = require('./lib/Engineer')
 const Intern = require('./lib/Intern')
+const Employee = require('./lib/Employee')
 const inquirer = require('inquirer')
 const path = require('path')
 const fs = require('fs')
@@ -15,9 +16,9 @@ const render = require('./src/page-template.js')
 // [x] Ask the options choices of Engineer, Intern, or end the quetsion.
 // [x] Continues of the choices
 // [x] Show the options
+// [x] Run the test
 // Generate the answers to html
 // Write validations
-// Run the test
 
 const firstQuestion = [
 	{
@@ -145,6 +146,9 @@ function initialQuestions() {
 function optionQuestion() {
 	return inquirer.prompt(optionsQuestion)
 }
+
+const testEmployee = new Employee(1, 'Alice', 'test@email.com')
+console.log(testEmployee)
 
 function routeQuestion(answers) {
 	const aManager = new Manager(
