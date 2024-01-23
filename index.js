@@ -16,9 +16,21 @@ const render = require('./src/page-template.js')
 // [x] Ask the options choices of Engineer, Intern, or end the quetsion.
 // [x] Continues of the choices
 // [x] Show the options
+// [x] Generate the answers to html
 // [x] Run the test
-// Generate the answers to html
-// Write validations
+// [x] Write validations
+
+const validateNumber = function (userInput) {
+	const done = this.async()
+
+	setTimeout(function () {
+		if (typeof userInput !== 'number') {
+			done('Type a number')
+		} else {
+			done(null, true)
+		}
+	}, 1000)
+}
 
 const firstQuestion = [
 	{
@@ -32,11 +44,13 @@ const firstQuestion = [
 		name: 'id',
 		message: 'Input your employee ID number',
 		default: 1,
-		validate: function (number) {
+		validate: function (input) {
 			const done = this.async()
+
 			setTimeout(function () {
-				if (typeof number !== 'number') {
-					done('Type only a number')
+				const number = Number(input)
+				if (isNaN(number)) {
+					done('Type a number')
 				} else {
 					done(null, true)
 				}
@@ -54,11 +68,13 @@ const firstQuestion = [
 		name: 'officeNumber',
 		message: 'What is your office number?',
 		default: 1,
-		validate: function (number) {
+		validate: function (input) {
 			const done = this.async()
+
 			setTimeout(function () {
-				if (typeof number !== 'number') {
-					done('Type only a number')
+				const number = Number(input)
+				if (isNaN(number)) {
+					done('Type a number')
 				} else {
 					done(null, true)
 				}
@@ -89,6 +105,18 @@ const enginnerQuestion = [
 		name: 'idEngineer',
 		message: 'Type your engineer ID',
 		default: '1',
+		validate: function (input) {
+			const done = this.async()
+
+			setTimeout(function () {
+				const number = Number(input)
+				if (isNaN(number)) {
+					done('Type a number')
+				} else {
+					done(null, true)
+				}
+			}, 1000)
+		},
 	},
 	{
 		type: 'input',
@@ -115,6 +143,18 @@ const internQuestion = [
 		name: 'idIntern',
 		message: "Write the intern's ID",
 		default: '1',
+		validate: function (input) {
+			const done = this.async()
+
+			setTimeout(function () {
+				const number = Number(input)
+				if (isNaN(number)) {
+					done('Type a number')
+				} else {
+					done(null, true)
+				}
+			}, 1000)
+		},
 	},
 	{
 		type: 'input',
@@ -146,9 +186,6 @@ function initialQuestions() {
 function optionQuestion() {
 	return inquirer.prompt(optionsQuestion)
 }
-
-const testEmployee = new Employee(1, 'Alice', 'test@email.com')
-console.log(testEmployee)
 
 function routeQuestion(answers) {
 	const aManager = new Manager(
